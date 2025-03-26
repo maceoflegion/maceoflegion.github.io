@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Pekoland!</title>
+  <link rel="stylesheet" href="pekostyle.css">
+  <style>
+    /* General body styling */
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header styling */
+    h1 {
+      margin-top: 20px;
+    }
+
+    /* Paragraph styling */
+    p {
+      margin: 10px 0;
+    }
+
+    /* Center the rabbit using flexbox but not affect other content */
+    .rabbit-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    /* Rabbit parts */
+    .rabbit {
+      position: relative;
+      width: 80px;
+      height: 100px;
+      background-color: #fff;
+      border-radius: 50% 50% 50% 50%;
+      animation: dance 0.5s ease-in-out infinite alternate;
+    }
+
+    .rabbit::before,
+    .rabbit::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 40px;
+      background-color: #fff;
+      border-radius: 50%;
+      top: -30px;
+    }
+
+    .rabbit::before {
+      left: 10px;
+      transform: rotate(-15deg);
+    }
+
+    .rabbit::after {
+      right: 10px;
+      transform: rotate(15deg);
+    }
+
+    .eyes {
+      position: absolute;
+      top: 30px;
+      left: 10px;
+      width: 60px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .eye {
+      width: 10px;
+      height: 10px;
+      background-color: #000;
+      border-radius: 50%;
+    }
+
+    .mouth {
+      position: absolute;
+      top: 55px;
+      left: 30px;
+      width: 20px;
+      height: 10px;
+      border-bottom: 3px solid #000;
+      border-radius: 0 0 10px 10px;
+    }
+
+    /* Dance animation */
+    @keyframes dance {
+      0% { transform: translateX(-10px) rotate(-5deg); }
+      100% { transform: translateX(10px) rotate(5deg); }
+    }
+
+    /* Footer section styling */
+    .footer {
+      background-color: lightblue;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    /* Trivia quiz styling */
+    #quiz-container {
+      background-color: #f9a826; /* Carrot orange color */
+      border-radius: 20px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      width: 80%;
+      max-width: 300px;
+      margin: 20px auto;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      border-top: 30px solid #f57c00; /* Top green leafy part */
+    }
+
+    /* Carrot top effect */
+    #quiz-container::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 40px;
+      background-color: #8bc34a; /* Green leafy top */
+      border-radius: 50%;
+    }
+
+    /* Styling for the question text */
+    #quiz-container h2 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    /* Styling for answer buttons */
+    .answer-button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 6px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    .answer-button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Styling for next button */
+    #next-btn {
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #next-btn:hover {
+      background-color: #218838;
+    }
+
+    /* Score display */
+    #score {
+      margin-top: 20px;
+    }
+
+    /* Carrot container */
+    #carrot-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none; /* So carrots don't block interactions */
+      z-index: 9999;
+      overflow: hidden;
+    }
+
+    /* Carrot falling animation */
+    .carrot {
+      position: absolute;
+      top: -50px; /* Start above the screen */
+      font-size: 30px;
+      animation: fall 4s linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh); /* Fall all the way down */
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h1 id="header">
+    <span>W</span>
+    <span>e</span>
+    <span>l</span>
+    <span>c</span>
+    <span>o</span>
+    <span>m</span>
+    <span>e</span>
+    <span> </span>
+    <span>t</span>
+    <span>o</span>
+    <span> </span>
+    <span>P</span>
+    <span>e</span>
+    <span>k</span>
+    <span>o</span>
+    <span>l</span>
+    <span>a</span>
+    <span>n</span>
+    <span>d</span>
+</h1>
+
+  <p>Usada Pekora fansite!</p>
+  
+  <!-- Audio element for Pekora's laugh -->
+<audio id="pekolaugh">
+    <source src="media/pekolaugh.mp3" type="audio/mpeg">
+</audio>
+
+  <div class="rabbit-container">
+    <div class="rabbit">
+      <div class="eyes">
+        <div class="eye"></div>
+        <div class="eye"></div>
+      </div>
+      <div class="mouth"></div>
+    </div>
+  </div>
+
+  <video controls poster="media/beachpeko.jpg" style="width: 100%; height: auto; max-width: 640px;">
+    <source src="media/pekorap.mp4" type="video/mp4">
+  </video>
+  
+  <!-- Links to other pages -->
+  <div class="link-grid">
+  <div class="link-item">
+    <a href="pekolandgallery.html">
+      <img src="media/pekogallery.png" alt="Page 1" class="link-image">
+    </a>
+  </div>
+  <div class="link-item">
+    <a href="pekosnake.html">
+      <img src="media/pekosnaketn.png" alt="Page 2" class="link-image">
+    </a>
+  </div>
+  <div class="link-item">
+    <a href="page3.html">
+      <img src="image3.jpg" alt="Page 3" class="link-image">
+    </a>
+  </div>
+  <div class="link-item">
+    <a href="page4.html">
+      <img src="image4.jpg" alt="Page 4" class="link-image">
+    </a>
+  </div>
+</div>
+
+
+  <div id="quiz-container">
+    <h2>Pekoland Trivia Quiz</h2>
+    <div id="question-container">
+      <p id="question"></p>
+      <div id="answers">
+        <button class="answer-button" onclick="selectAnswer(0)">Answer 1</button>
+        <button class="answer-button" onclick="selectAnswer(1)">Answer 2</button>
+        <button class="answer-button" onclick="selectAnswer(2)">Answer 3</button>
+        <button class="answer-button" onclick="selectAnswer(3)">Answer 4</button>
+      </div>
+    </div>
+    <button id="next-btn" onclick="nextQuestion()">Next Question</button>
+    <p id="score">Score: 0</p>
+  </div>
+
+  <button id="rainButton" onclick="startCarrotRain()">Make Carrots Rain!</button>
+
+  <div id="carrot-container"></div>
+
+  <div class="footer">
+    <p class="p2">Konpeko!</p>
+  </div>
+  
+  
+<script>
+    document.getElementById('header').addEventListener('click', function () {
+        const audio = document.getElementById('pekolaugh');
+        audio.play();  // Play the laugh when the h1 element is clicked
+    });
+</script>
+
+  <script>
+    const questions = [
+      {
+        question: "What is Pekora's favorite food?",
+        answers: ["Carrots", "Apples", "Lettuce", "Bananas"],
+        correct: 0
+      },
+      {
+        question: "What is the name of the rap at the beginning of Pekora's streams?",
+        answers: ["Carrot God", "Pekorap", "Mikorap", "Blue Dream"],
+        correct: 1
+      },
+      {
+        question: "What is Pekora's greeting?",
+        answers: ["Konpeko", "OhaPeko", "PekoPeko", "Konnichiwa"],
+        correct: 0
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      document.getElementById('question').textContent = questions[currentQuestion].question;
+      const answerButtons = document.getElementsByClassName('answer-button');
+      questions[currentQuestion].answers.forEach((answer, index) => {
+        answerButtons[index].textContent = answer;
+        answerButtons[index].classList.remove("correct", "wrong");
+      });
+    }
+
+    function selectAnswer(answerIndex) {
+      const correctAnswer = questions[currentQuestion].correct;
+      if (answerIndex === correctAnswer) {
+        score++;
+        document.getElementById('score').textContent = `Score: ${score}`;
+        document.getElementsByClassName('answer-button')[answerIndex].classList.add("correct");
+      } else {
+        document.getElementsByClassName('answer-button')[answerIndex].classList.add("wrong");
+        document.getElementsByClassName('answer-button')[correctAnswer].classList.add("correct");
+      }
+      document.getElementById('next-btn').style.display = "inline-block";
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        loadQuestion();
+        document.getElementById('next-btn').style.display = "none";
+      } else {
+        document.getElementById('quiz-container').innerHTML = `<h2>Quiz Complete!</h2><p>Your final score is: ${score}</p>`;
+      }
+    }
+
+    function startCarrotRain() {
+      const carrotContainer = document.getElementById('carrot-container');
+      for (let i = 0; i < 10; i++) {
+        const carrot = document.createElement('div');
+        carrot.classList.add('carrot');
+        carrot.textContent = "🥕";
+        carrot.style.left = `${Math.random() * 100}vw`; // Random horizontal position
+        carrotContainer.appendChild(carrot);
+        // Remove carrot after animation ends
+        setTimeout(() => {
+          carrot.remove();
+        }, 4000); // Matches the animation duration
+      }
+    }
+
+    window.onload = loadQuestion;
+  </script>
+</body>
+</html>

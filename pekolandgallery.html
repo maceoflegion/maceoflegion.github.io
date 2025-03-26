@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pekora's Art Gallery</title>
+  <link rel="stylesheet" href="gallery.css">
+</head>
+<body>
+  <header>
+    <h1>Bunny in the Spotlight!</h1>
+    <a href="pekoland.html">Back to Homepage</a>
+  </header>
+
+  <main>
+    <h2 id="page-title">Page 1</h2>
+    <div class="gallery" id="gallery"></div>
+    <div id="pagination-controls">
+  <button class="carrot-button" onclick="goToPage(1)">1</button>
+  <button class="carrot-button" onclick="goToPage(2)">2</button>
+      <!-- Add more buttons for more pages if needed -->
+    </div>
+  </main>
+
+  <div id="lightbox" class="hidden">
+    <span class="close" onclick="closeLightbox()">&times;</span>
+    <img id="lightbox-image" src="" alt="Large view">
+  </div>
+
+  <footer>
+    <p>&copy; 2024 Pekoland. All rights reserved.</p>
+  </footer>
+
+  <script src="pagination.javascript"></script>
+</body>
+</html>

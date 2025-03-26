@@ -1,0 +1,275 @@
+/* gallery.css */
+
+/* General page layout */
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #ffb3d9, #ffcc99); /* Soft pastel gradient */
+  background-size: 100% 100%;
+  background-repeat: repeat; /* Repeats the background image */
+  overflow: auto; /* Prevents overflow from repeating pattern */
+}
+
+/* Create a fun repeating pattern of circles using radial gradients */
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #ffcc99 10%, transparent 10.1%) 0 0, 
+              radial-gradient(circle, #ffb3d9 10%, transparent 10.1%) 50% 50%;
+  background-size: 100px 100px; /* Adjust the size of the circles */
+  pointer-events: none; /* Prevents the pattern from interfering with content */
+  z-index: -1; /* Sends the background behind the content */
+}
+
+@font-face {
+  font-family: 'Summer'; /* Custom font name */
+  src: url('Fonts/Summer.otf') format('opentype'); /* Corrected file extension and format */
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'easter'; /* Custom font name */
+  src: url('Fonts/easter.ttf') format('truetype'); /* Corrected file extension and format */
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'carrots'; /* Custom font name */
+  src: url('Fonts/carrots.ttf') format('truetype'); /* Corrected file extension and format */
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'dc';
+  src: url('Fonts/dc.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+	font-family: 'Dreadful-Regular';
+	src: url('Fonts/Dreadful-Regular.otf') format('opentype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+header {
+  background-color: #ff7f50; /* Pekora's signature orange */
+  padding: 20px;
+  color: white;
+}
+
+h1 {
+  font-family: 'carrots', Georgia, serif;
+  font-size: 42px;
+  color: lightblue; 
+  text-shadow: 2px 2px 0 #003d66, -2px -2px 0 white;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Gallery container */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 images per row (not 2) */
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Individual art pieces */
+.art-piece {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.art-piece img {
+  width: 100%;           /* Make the image fill the container's width */
+  height: 200px;         /* Set a fixed height for all images */
+  object-fit: cover;     /* Ensures images are cropped to fill the container */
+  display: block;        /* Prevents extra space below images */
+  border-bottom: 2px solid #ddd; /* Optional: border for styling */
+}
+
+/* Pagination styling */
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination a {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+  border-radius: 4px;
+}
+
+.pagination a:hover {
+  background-color: #0056b3;
+}
+
+.pagination .page-number {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Lightbox styles */
+#lightbox {
+  position: fixed; /* Fix the lightbox on the screen */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+  display: flex;
+  justify-content: center; /* Center the image horizontally */
+  align-items: center; /* Center the image vertically */
+  z-index: 1000; /* Ensure it appears above other elements */
+  visibility: hidden; /* Initially hidden */
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.3s ease; /* Smooth transition */
+}
+
+#lightbox img {
+  max-width: 90%; /* Scale the image to fit within the viewport */
+  max-height: 90%; /* Prevent the image from overflowing */
+  border: 3px solid white;
+  border-radius: 10px;
+}
+
+#lightbox:not(.hidden) {
+  visibility: visible; /* Show lightbox when not hidden */
+  opacity: 1;
+}
+
+#lightbox .close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  z-index: 1010;
+}
+
+#lightbox .close:hover {
+  background: rgba(255, 255, 255, 0.6);
+  color: black;
+}
+
+/* CSS for different page titles */
+.page-title-summer {
+  font-family: 'Summer', sans-serif; /* Fallback to sans-serif if 'Summer' is not found */
+  font-size: 45px;
+  color: yellow;
+  text-shadow: 2px 2px 6px rgba(255, 223, 104, 0.6), 0px 0px 25px rgba(255, 223, 104, 0.3); /* Chill sunlight shadow */
+}
+
+.page-title-autumn {
+  font-family: 'Dreadful-Regular', sans-serif;  /* Fall back to sans-serif if custom font is unavailable */
+  font-size: 60px;                             /* Set the font size */
+  line-height: 1.2;                           /* Adjust line height for better readability */
+  letter-spacing: 1px;                         /* Add a bit of spacing between letters */
+  font-weight: normal;                        /* Ensure the font isn't too bold, if it's too heavy */
+  color: #9932cc;                             /* Use a high contrast color for better visibility */
+  text-align: center;                         /* Ensure the text is centered on the page */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Optional: Add subtle shadow to improve contrast */
+}
+
+
+.page-title-winter {
+  font-family: 'Courier New', monospace;
+  font-size: 32px;
+  color: #1e90ff; /* Dodger Blue */
+}
+
+.page-title-spring {
+  font-family: 'Georgia', serif;
+  font-size: 38px;
+  color: #32cd32; /* Lime Green */
+}
+
+.carrot-button {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  background: linear-gradient(to bottom, #ff8c00, #ffa500); /* Gradient for a carrot color */
+  border: none;
+  border-radius: 15px; /* Rounded bottom for the carrot shape */
+  clip-path: polygon(50% 0%, 100% 25%, 85% 100%, 15% 100%, 0% 25%); /* Triangular top for the carrot tip */
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.carrot-button:hover {
+  transform: translateY(-2px); /* Slight lift effect on hover */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Adds depth */
+}
+
+.carrot-button:active {
+  transform: translateY(0); /* Press effect */
+  box-shadow: none;
+}
+
+/* Optional: Add a small green top to mimic carrot leaves */
+.carrot-button::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  width: 20px;
+  height: 10px;
+  background: linear-gradient(to top, #228b22, #32cd32); /* Green gradient for leaves */
+  border-radius: 50%; /* Rounded for leaf-like appearance */
+}
+
+
+/* Footer */
+footer {
+  background-color: #ff7f50;
+  color: white;
+  padding: 10px;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  text-align: center;
+}
+
+footer p {
+  margin: 0;
+}

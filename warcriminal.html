@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="warcriminal.css">
+    <title>War Criminal Game</title>
+</head>
+<body>
+    
+    <audio id="catchSound" src="media/coin.mp3" preload="auto"></audio>
+
+    <!-- Container for the game -->
+    <div class="game-container">
+        <!-- Game canvas -->
+        <canvas id="gameCanvas" width="500" height="600"></canvas>
+    </div>
+
+    <!-- Mobile control buttons below the game -->
+    <div class="controls">
+        <button class="control-button" id="leftBtn">←</button> <!-- Left button with text -->
+        <button class="control-button" id="rightBtn">→</button> <!-- Right button with text -->
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameOverScreen" class="game-over-screen">
+        <h2>Game Over</h2>
+        <!-- Restart Button -->
+        <button id="restartBtn">Restart?</button>
+    </div>
+
+    <script src="warcriminal.js"></script>
+</body>
+</html>

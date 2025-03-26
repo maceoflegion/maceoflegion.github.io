@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pekora's Art Gallery</title>
+  <link rel="stylesheet" href="gallery.css">
+</head>
+<body>
+
+  <header>
+    <h1>Pekora's Art Gallery</h1>
+    <a href="index.html">Back to Homepage</a>
+  </header>
+
+  <main>
+    <!-- Page Title -->
+    <h2 id="gallery-title">Page 1 - Cute Art Gallery</h2>
+
+    <!-- Gallery Container -->
+    <div class="gallery" id="gallery">
+      <!-- Gallery items will be injected here by JavaScript -->
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+      <a href="#" class="prev" onclick="changePage('prev')">Previous</a>
+      <span class="page-number" id="page-number">1</span>
+      <a href="#" class="next" onclick="changePage('next')">Next</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Pekoland. All rights reserved.</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Array for image paths
+    const images = [
+     "media/summer1.jpg", "media/summer2.jpg", "media/summer3.jpg", "media/summer4.jpg",
+  "media/summer5.jpg", "media/summer6.jpg", "media/summer7.jpg", "media/summer8.jpg",
+      "path_to_artwork_9.jpg", "path_to_artwork_10.jpg", "path_to_artwork_11.jpg", "path_to_artwork_12.jpg"
+    ];
+
+    // Titles for each page
+    const titles = [
+      "Cute Art Gallery - Page 1", "Magical Art Creations - Page 2", 
+      "Lovely Artworks - Page 3", "Bunny Style Collection - Page 4"
+    ];
+
+    let currentPage = 1;
+    const itemsPerPage = 8; // 2 rows * 4 columns = 8 items per page
+    const totalPages = Math.ceil(images.length / itemsPerPage);
+
+    // Function to handle page changes
+    function changePage(direction) {
+      if (direction === 'next' && currentPage < totalPages) {
+        currentPage++;
+      } else if (direction === 'prev' && currentPage > 1) {
+        currentPage--;
+      }
+
+      document.getElementById('page-number').innerText = currentPage;
+      updateTitle();
+      loadGallery();
+    }
+
+    // Function to update the title based on the current page
+    function updateTitle() {
+      const titleElement = document.getElementById('gallery-title');
+      if (titles[currentPage - 1]) {
+        titleElement.innerText = titles[currentPage - 1];
+      } else {
+        titleElement.innerText = "Default Title";
+      }
+    }
+
+    // Function to load gallery items for the current page
+    function loadGallery() {
+      const galleryContainer = document.getElementById('gallery');
+      galleryContainer.innerHTML = ''; // Clear current gallery
+
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const pageImages = images.slice(startIndex, endIndex);
+
+      pageImages.forEach(image => {
+        const div = document.createElement('div');
+        div.classList.add('art-piece');
+        div.innerHTML = `<img src="${image}" alt="Gallery Artwork">`;
+        galleryContainer.appendChild(div);
+      });
+    }
+
+    loadGallery(); // Initial load
+  </script>
+
+</body>
+</html>

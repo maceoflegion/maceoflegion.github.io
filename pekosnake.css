@@ -1,0 +1,146 @@
+@font-face {
+    font-family: 'arcade';
+    src: url('fonts/arcade.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'arcade2';
+    src: url('fonts/arcade2.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(to bottom right, #000428, #004e92); /* Dark retro gradient */
+    background-image: url('media/city.jpg'); /* Custom background image */
+    background-size: cover; /* Ensures the image covers the page */
+    background-position: center center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents tiling */
+    font-family: 'Press Start 2P', cursive; /* Playful retro font */
+    color: white; /* Default text color */
+}
+
+header {
+    position: fixed;
+    font-family: 'arcade2', serif;
+    color: #f4ffb0; /* Lighter yellow for readability */
+    top: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    z-index: 1000; /* Keeps header on top */
+    text-shadow: 0 0 3px #f4ffb0, 0 0 6px #f4ffb0, 0 0 9px #f4ffb0; /* Softer glow effect */
+    background: rgba(0, 0, 0, 0.8); /* Transparent black background for readability */
+    border-bottom: 2px solid #f4ffb0; /* Highlighted bottom border */
+    animation: flash 1.5s infinite; /* Flashing animation */
+}
+
+header h1 {
+    font-size: 42px; /* Larger, retro style */
+    margin: 0;
+    text-transform: uppercase; /* Arcade-style all caps */
+}
+
+@keyframes flash {
+    0%, 100% {
+        text-shadow: 0 0 3px #f4ffb0, 0 0 6px #f4ffb0, 0 0 9px #f4ffb0;
+        color: #f4ffb0;
+    }
+    50% {
+        text-shadow: 0 0 10px #f4ffb0, 0 0 20px #f4ffb0, 0 0 30px #f4ffb0;
+        color: #ffffe0; /* Slightly brighter yellow during the flash */
+    }
+}
+
+#scoreboard {
+    font-family: 'arcade', serif;
+    font-size: 45px;
+    color: #00ffff; /* Neon cyan for retro look */
+    text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 15px #00ffff; /* Glowing text effect */
+    margin-top: 100px; /* Prevent overlap with header */
+}
+
+#gameContainer {
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black for arcade vibe */
+    border: 3px solid #ff69b4; /* Neon pink border */
+    padding: 15px;
+}
+
+canvas {
+    border: 3px solid #00ff00; /* Neon green for retro feel */
+    background-color: black; /* Classic arcade screen style */
+}
+
+.button {
+    background-color: #ff69b4; /* Neon pink buttons */
+    color: #fff;
+    font-size: 20px;
+    width: 80px;
+    height: 40px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 0 10px #ff69b4;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #ff88a0;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px #ff88a0;
+}
+
+#gameOverScreen {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 30px;
+    border-radius: 10px;
+    display: none;
+    font-size: 26px;
+    font-family: 'arcade', serif;
+    text-align: center;
+    color: black;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    border: 3px solid #00ffff; /* Neon cyan border */
+}
+
+#restartBtn {
+    padding: 10px 20px;
+    background-color: #ff69b4;
+    color: white;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 10px #ff69b4;
+    transition: all 0.3s ease;
+}
+
+#restartBtn:hover {
+    background-color: #ff88a0;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px #ff88a0;
+}
+
+#pekoImage {
+    position: fixed; /* Sticks the image to a fixed spot */
+    bottom: 0; /* Aligns to the bottom of the page */
+    right: 0px; /* Places it on the bottom left */
+    width: 245px; /* Slightly larger for visibility */
+    height: auto; /* Keeps aspect ratio */
+    z-index: 1000;
+    pointer-events: none; /* Prevents interference with clicks */
+    filter: drop-shadow(0 0 10px #ff69b4); /* Neon glow effect */
+}

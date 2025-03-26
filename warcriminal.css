@@ -1,0 +1,184 @@
+/* Body Layout */
+body {
+    font-family: 'Press Start 2P', cursive; /* Retro pixel font */
+    background-color: #4B5320; /* Olive green background for military theme */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    overflow: hidden;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+/* Pekora Art Styling */
+.pekora-art {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Game Container for Canvas and Scoreboard */
+.game-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    max-width: 900px;
+    flex-direction: row;
+    margin-bottom: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Scoreboard */
+.scoreboard {
+    margin-right: 20px;
+    padding: 10px;
+    background-color: #556B2F; /* Military olive green */
+    border-radius: 10px;
+    text-align: center;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive; /* Retro font */
+    font-size: 30px;
+    border: 3px solid #8B4513; /* Matching border for consistency */
+}
+
+/* Game Canvas */
+#gameCanvas {
+    border: 5px solid #8B4513; /* Rustic border color */
+    background-color: #2F4F4F; /* Dark gray-green, military-style */
+    max-width: 100%;
+    max-height: 70vh;
+    width: 100%;
+    height: auto;
+    position: relative;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); /* Adds depth */
+    z-index: 5; /* Ensure it's behind the game over screen */
+}
+
+/* Control Buttons Container */
+.controls {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Control Buttons */
+.control-button {
+    background-color: #4B5320; /* Military olive color */
+    border: 3px solid #8B4513; /* Rustic border */
+    width: 50px;
+    height: 50px;
+    font-size: 0; /* Remove any text */
+    cursor: pointer;
+    border-radius: 50%; /* Circular button */
+    margin: 10px;
+    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Button Press Effect */
+.control-button:active {
+    background-color: #6B8E23; /* Darker green when pressed */
+    transform: scale(0.95); /* Slight shrink effect when pressed */
+}
+
+/* Adding arrows to buttons */
+#leftBtn::before {
+    content: "←"; /* Left arrow */
+    font-size: 30px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#rightBtn::before {
+    content: "→"; /* Right arrow */
+    font-size: 30px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Game Over Screen Styling */
+#gameOverScreen {
+    display: none; /* Hidden by default */
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark background for contrast */
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Press Start 2P', cursive; /* Retro font */
+    width: 300px;
+    font-size: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    z-index: 10; /* Ensure it's on top of the canvas */
+}
+
+/* Game Over Button */
+#gameOverScreen button {
+    background-color: #8B4513;
+    color: white;
+    font-size: 18px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .control-button {
+        width: 45px;
+        height: 45px;
+        font-size: 0; /* Ensure no text inside */
+    }
+
+    .scoreboard {
+        font-size: 20px;
+    }
+}
+
+/* Retro Scanline Effect (CRT Look) */
+#gameCanvas {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Adding Retro Scanlines */
+#gameCanvas::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: repeating-linear-gradient(
+        transparent 0, 
+        transparent 1px, 
+        rgba(0, 0, 0, 0.2) 1px, 
+        rgba(0, 0, 0, 0.2) 2px
+    );
+    pointer-events: none;
+}
+
+/* Optional: Camo or Retro Pixel Patterns for background */
+body {
+    background-image: url('path_to_pixel_pattern.png'); /* Optional pixelated background */
+    background-size: cover;
+    background-position: center center;
+    background-color: #4B5320; /* Olive green background for military theme */
+}

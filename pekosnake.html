@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game - Pekora Bunny Snake</title>
+     <link rel="stylesheet" href="pekosnake.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #gameContainer {
+            position: relative;
+        }
+        canvas {
+            border: 1px solid black;
+            background-color: lightblue; /* Light blue background */
+        }
+        .controls {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: 60px 60px 60px;
+            gap: 10px;
+            justify-content: center;
+        }
+        .button {
+            width: 60px;
+            height: 60px;
+            background-color: #444;
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            line-height: 60px;
+            border-radius: 10px;
+            user-select: none;
+            cursor: pointer;
+        }
+        .button:active {
+            background-color: #666;
+        }
+        #gameOverScreen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        #restartBtn {
+            margin-top: 10px;
+            font-family: arcade, serif;
+            padding: 10px 20px;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #restartBtn:hover {
+            background-color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Pekosnake</h1>
+</header>
+
+<audio id="background-music" loop>
+  <source src="media/powerup.mp3" type="audio/mpeg">
+</audio>
+
+<button id="toggle-button" onclick="toggleMusic()">Play Music</button>
+
+<style>
+  /* Retro arcade button styling */
+  #toggle-button {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    padding: 15px 30px;
+    background: linear-gradient(45deg, #ff3d00, #ff9100);
+    color: #fff;
+    font-family: 'Press Start 2P', monospace; /* Retro pixel font (Google Fonts) */
+    font-size: 14px;
+    text-transform: uppercase;
+    border: 3px solid #000;
+    border-radius: 10px;
+    cursor: pointer;
+    text-shadow: 2px 2px #000;
+    box-shadow: 0 4px #000;
+    outline: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  #toggle-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px #000;
+  }
+  #toggle-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px #000;
+  }
+</style>
+
+<script>
+  const music = document.getElementById('background-music');
+  const toggleButton = document.getElementById('toggle-button');
+  
+  music.volume=.5;
+
+  function toggleMusic() {
+    if (music.paused) {
+      music.play();
+      toggleButton.textContent = 'Pause Music';
+    } else {
+      music.pause();
+      toggleButton.textContent = 'Play Music';
+    }
+  }
+</script>
+	
+    <div id="scoreboard">Score: 0</div>
+    <div id="gameContainer">
+        <canvas id="snakeGame" width="400" height="400"></canvas>
+        <div id="gameOverScreen">
+            <p>Game Over!</p>
+            <p id="finalScore">Score: 0</p>
+            <button id="restartBtn">Restart Game</button>
+        </div>
+    </div>
+    <div class="controls">
+        <div></div>
+        <div class="button" id="up">↑</div>
+        <div></div>
+        <div class="button" id="left">←</div>
+        <div class="button" id="down">↓</div>
+        <div class="button" id="right">→</div>
+    </div>
+
+    <script>
+    	
+        const canvas = document.getElementById('snakeGame');
+        const ctx = canvas.getContext('2d');
+        
+        const scale = 20;
+        const rows = canvas.height / scale;
+        const columns = canvas.width / scale;
+        
+        let snake;
+        let fruit;
+        let score = 0;
+        let gameInterval;  // Track the game loop interval
+
+        const bunnyImage = new Image();
+        bunnyImage.src = 'media/bunny.png'; // Path to the bunny image
+
+        const eatSound = new Audio('media/peko.mp3'); // Path to the sound effect when eating
+        const deathSound = new Audio('media/pekodie.mp3'); // Path to the death sound effect
+        const intervalSound = new Audio('media/pekoW.mp3'); // Path to the interval sound effect
+
+        let lastPlayedInterval = -1; // Variable to track last played score for interval sound
+
+        bunnyImage.onload = function() {
+            setup();
+        };
+
+        bunnyImage.onerror = function() {
+            alert("Error loading the bunny image. Please check the file path.");
+        };
+
+        function setup() {
+            clearInterval(gameInterval); // Clear any existing game loop
+            snake = new Snake();
+            fruit = new Fruit();
+            score = 0; // Reset score
+            document.getElementById('scoreboard').textContent = 'Score: ' + score;
+            document.getElementById('gameOverScreen').style.display = 'none'; // Hide game over screen
+            gameInterval = setInterval(gameLoop, 100);  // Set interval for game loop
+
+            // Attach touch controls
+            document.getElementById('up').addEventListener('click', () => snake.changeDirection('UP'));
+            document.getElementById('down').addEventListener('click', () => snake.changeDirection('DOWN'));
+            document.getElementById('left').addEventListener('click', () => snake.changeDirection('LEFT'));
+            document.getElementById('right').addEventListener('click', () => snake.changeDirection('RIGHT'));
+            
+            // Restart button event
+            document.getElementById('restartBtn').addEventListener('click', setup);
+        }
+
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            snake.update();
+            snake.draw();
+            fruit.draw();
+
+            if (snake.eat(fruit)) {
+                fruit = new Fruit();
+                score++;
+                document.getElementById('scoreboard').textContent = 'Score: ' + score;
+
+                // Play `peko.mp3` only when the score is NOT a multiple of 5
+                if (score % 5 !== 0) {
+                    eatSound.play();
+                }
+            }
+
+            // Check if we need to play the interval sound at multiples of 5
+            if (score % 5 === 0 && score !== 0 && lastPlayedInterval !== score) {
+                intervalSound.play();
+                lastPlayedInterval = score; // Store the last played score to avoid re-triggering
+            }
+
+            if (snake.checkCollision()) {
+                gameOver();
+            }
+        }
+
+        function gameOver() {
+            // Play the death sound
+            deathSound.play();
+            
+            // Display game over screen
+            document.getElementById('finalScore').textContent = 'Score: ' + score;
+            document.getElementById('gameOverScreen').style.display = 'block';
+            clearInterval(gameInterval); // Stop the game loop
+        }
+
+        function Snake() {
+            this.snakeArray = [{x: 5, y: 5}];
+            this.direction = 'RIGHT';
+            this.eating = false;
+
+            this.update = function() {
+                let head = Object.assign({}, this.snakeArray[0]);
+
+                if (this.direction === 'UP') head.y -= 1;
+                if (this.direction === 'DOWN') head.y += 1;
+                if (this.direction === 'LEFT') head.x -= 1;
+                if (this.direction === 'RIGHT') head.x += 1;
+
+                this.snakeArray.unshift(head); // Add new head at the front
+
+                // If snake eats fruit, do not remove last segment, so it grows
+                if (!this.eating) {
+                    this.snakeArray.pop(); // Remove last segment if not eating
+                } else {
+                    this.eating = false; // Reset eating flag after growing
+                }
+            };
+
+            this.draw = function() {
+                for (let i = 0; i < this.snakeArray.length; i++) {
+                    // Draw bunny for each segment
+                    ctx.drawImage(bunnyImage, this.snakeArray[i].x * scale, this.snakeArray[i].y * scale, scale, scale);
+                }
+            };
+
+            this.eat = function(fruit) {
+                let head = this.snakeArray[0];
+                if (head.x === fruit.x && head.y === fruit.y) {
+                    this.eating = true; // Flag that the snake ate the fruit
+                    return true;
+                }
+                return false;
+            };
+
+            this.checkCollision = function() {
+                let head = this.snakeArray[0];
+
+                // Check for wall collisions
+                if (head.x < 0 || head.x >= columns || head.y < 0 || head.y >= rows) {
+                    return true;
+                }
+
+                // Check for collisions with itself
+                for (let i = 1; i < this.snakeArray.length; i++) {
+                    if (head.x === this.snakeArray[i].x && head.y === this.snakeArray[i].y) {
+                        return true;
+                    }
+                }
+
+                return false;
+            };
+
+            this.changeDirection = function(newDirection) {
+                if (newDirection === 'UP' && this.direction !== 'DOWN') this.direction = 'UP';
+                if (newDirection === 'DOWN' && this.direction !== 'UP') this.direction = 'DOWN';
+                if (newDirection === 'LEFT' && this.direction !== 'RIGHT') this.direction = 'LEFT';
+                if (newDirection === 'RIGHT' && this.direction !== 'LEFT') this.direction = 'RIGHT';
+            };
+        }
+
+        function Fruit() {
+            this.x = Math.floor(Math.random() * columns);
+            this.y = Math.floor(Math.random() * rows);
+
+            this.draw = function() {
+                ctx.font = '20px sans-serif'; // Set font size for the emoji
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('🥕', this.x * scale + scale / 2, this.y * scale + scale / 2); // Draw carrot emoji
+            };
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') snake.changeDirection('UP');
+            if (e.key === 'ArrowDown') snake.changeDirection('DOWN');
+            if (e.key === 'ArrowLeft') snake.changeDirection('LEFT');
+            if (e.key === 'ArrowRight') snake.changeDirection('RIGHT');
+        });
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+      <!-- Peko image -->
+    <img id="pekoImage" src="media/pekocool.png" alt="Pekora with sunglasses" />  
+    
+</body>
+</html>
